@@ -2,9 +2,6 @@ plugins {
     id 'org.springframework.boot' version '2.0.0.RELEASE'
 }
 
-group 'com.mmanrique'
-version '1.0-SNAPSHOT'
-
 apply plugin: 'scala'
 apply plugin: 'io.spring.dependency-management'
 
@@ -13,6 +10,10 @@ repositories {
     maven {
         url 'https://repo.spring.io/libs-milestone'
     }
+}
+
+bootJar {
+    classifier = ''
 }
 
 
