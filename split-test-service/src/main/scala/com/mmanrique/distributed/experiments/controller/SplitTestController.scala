@@ -19,4 +19,11 @@ class SplitTestController(@Autowired splitTestRepository: SplitTestRepository) e
     GetSplitTestResponse(result)
   }
 
+  @RequestMapping(method=Array(RequestMethod.GET))
+  def getConnectionStatus(): String ={
+    logger.info("Asking for Connection Status")
+    splitTestRepository.getSplitTestValue("CHEAP_FLIGHTS", None)
+    "Connection is Up"
+  }
+
 }

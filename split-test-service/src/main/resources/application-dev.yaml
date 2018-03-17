@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: dev
+
+cassandra:
+  location: 127.0.0.1
+  keyspace-name: dev

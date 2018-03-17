@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: container
+
+cassandra:
+  location: docker.for.mac.host.internal
+  keyspace-name: dev

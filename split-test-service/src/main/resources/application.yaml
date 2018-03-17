@@ -4,6 +4,8 @@ eureka:
       defaultZone: ${EUREKA_SERVER:http://127.0.0.1:8761}/eureka/
   instance:
     preferIpAddress: true
----
 server:
   port: ${PORT:8081}
+spring:
+  profiles:
+    active: ${PROFILE:dev}
