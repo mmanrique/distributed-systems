@@ -3,6 +3,7 @@ package com.mmanrique.distributed.experiments.controller
 import com.mmanrique.distributed.experiments.interface.{GetSplitTestRequest, GetSplitTestResponse}
 import com.mmanrique.distributed.experiments.repository.SplitTestRepository
 import com.typesafe.scalalogging.LazyLogging
+import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, RequestMethod, RestController}
 
@@ -19,8 +20,9 @@ class SplitTestController(@Autowired splitTestRepository: SplitTestRepository) e
     GetSplitTestResponse(result)
   }
 
-  @RequestMapping(method=Array(RequestMethod.GET))
-  def getConnectionStatus(): String ={
+  @RequestMapping(value = Array("/"), method = Array(RequestMethod.GET))
+  @Timed(value = "getConnectionStatus")
+  def getConnectionStatus: String = {
     logger.info("Asking for Connection Status")
     splitTestRepository.getSplitTestValue("CHEAP_FLIGHTS", None)
     "Connection is Up"

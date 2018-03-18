@@ -9,3 +9,12 @@ server:
 spring:
   profiles:
     active: ${PROFILE:dev}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  metrics:
+    export:
+      atlas:
+        uri: http://localhost:7101/api/v1/publish

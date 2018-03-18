@@ -15,7 +15,7 @@ class SplitTestRepository(cassandraGateway: CassandraGateway) {
 
 
   def getSplitTestValue(name: String, customerId: Option[String]): String = {
-    val session = cassandraGateway.getSession()
+    val session = cassandraGateway.getSession
     val clause = QueryBuilder.select().all().from("split_test").where(QueryBuilder.eq("name", name))
     val resultSet = session.execute(clause)
     val splitTestStates = for (row <- resultSet.asScala.toList) yield parseDatabaseRow(row)
