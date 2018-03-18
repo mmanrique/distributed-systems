@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
 @Component
-class SplitTestServiceClientImpl(@Autowired mapper: ObjectMapper) extends SplitTestServiceClient {
-
-  private val restTemplate = new RestTemplate()
+class SplitTestServiceClientImpl(@Autowired mapper: ObjectMapper,
+                                 @Autowired restTemplate: RestTemplate) extends SplitTestServiceClient {
+  
 
   def getSplitTest(name: String, customerId: Option[String] = None): GetSplitTestResponse = {
     val payload = GetSplitTestRequest(name, customerId)
