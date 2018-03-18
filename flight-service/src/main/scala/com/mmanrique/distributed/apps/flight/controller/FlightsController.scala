@@ -1,9 +1,9 @@
 package com.mmanrique.distributed.apps.flight.controller
 
-import com.mmanrique.distributed.apps.flight.client.SplitTestServiceClient
 import com.mmanrique.distributed.apps.flight.data.FlightsRepository
 import com.mmanrique.distributed.apps.flight.interface.GetFlightsRequest
 import com.mmanrique.distributed.apps.flight.model.Flight
+import com.mmanrique.distributed.experiments.client.SplitTestServiceClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, RequestMethod, RestController}
 

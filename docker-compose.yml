@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+  eureka-server:
+    image: distributed-systems/eureka-server
+    ports:
+     - "8761:8761"
+  flight-service:
+    image: distributed-systems/flight-service
+    deploy:
+      replicas: 3
+      endpoint_mode: dnsrr
+    ports:
+     - "8761:8761"
+    environment:
+      - EUREKA_SERVER=http://eureka-server:8761
