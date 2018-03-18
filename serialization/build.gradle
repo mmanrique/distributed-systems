@@ -1,0 +1,12 @@
+repositories {
+    mavenCentral()
+}
+apply plugin: 'scala'
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.12.1'
+    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.4'
+
+    compile 'org.springframework:spring-context:5.0.4.RELEASE'
+
+}

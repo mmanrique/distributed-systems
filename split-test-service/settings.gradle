@@ -1,2 +1,3 @@
 rootProject.name = 'split-test-service'
-
+include ':serialization'
+project(':serialization').projectDir = new File(settingsDir, '../serialization')

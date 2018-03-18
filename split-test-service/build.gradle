@@ -27,6 +27,10 @@ dependencies {
     compile 'org.scala-lang:scala-library:2.12.1'
     compile 'com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.4'
     compile 'com.datastax.cassandra:cassandra-driver-core:3.4.0'
+    //serialization project
+    compile(project(':serialization')) {
+
+    }
 
     //Metrics
     compile 'io.micrometer:micrometer-registry-atlas:latest.release'

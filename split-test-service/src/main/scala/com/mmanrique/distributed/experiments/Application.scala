@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan
+@ComponentScan(Array("com.mmanrique.distributed"))
 @EnableDiscoveryClient
 class Application {
 
