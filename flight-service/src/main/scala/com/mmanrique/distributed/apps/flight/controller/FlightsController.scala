@@ -4,6 +4,7 @@ import com.mmanrique.distributed.apps.flight.data.FlightsRepository
 import com.mmanrique.distributed.apps.flight.interface.GetFlightsRequest
 import com.mmanrique.distributed.apps.flight.model.Flight
 import com.mmanrique.distributed.experiments.client.SplitTestServiceClient
+import com.mmanrique.distributed.experiments.interface.GetSplitTestRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, RequestMethod, RestController}
 
@@ -22,7 +23,7 @@ class FlightsController(@Autowired repository: FlightsRepository,
 
   @RequestMapping(method = Array(RequestMethod.GET))
   def getFlightsPage: String = {
-    if (splitTestServiceClient.getSplitTest("CHEAP_FLIGHTS").value == "EXPERIMENT_1")
+    if (splitTestServiceClient.getSplitTest(GetSplitTestRequest("CHEAP_FLIGHTS")).value == "EXPERIMENT_1")
       "You're in the CHEAP flights page"
     else
       "You're in the flights page"

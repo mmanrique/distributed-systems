@@ -1,10 +1,12 @@
 package com.mmanrique.distributed.experiments.client
 
-import com.mmanrique.distributed.experiments.interface.GetSplitTestResponse
+import com.mmanrique.distributed.experiments.interface.{GetSplitTestRequest, GetSplitTestResponse}
+import org.springframework.cloud.openfeign.FeignClient
+import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod}
 
+@FeignClient("split-test-service")
 trait SplitTestServiceClient {
 
-  def Path: String = "http://split-test-service/"
-
-  def getSplitTest(name: String, customerId: Option[String] = None): GetSplitTestResponse
+  @RequestMapping(value = Array("/"), method = Array(RequestMethod.POST))
+  def getSplitTest(getSplitTestRequest: GetSplitTestRequest): GetSplitTestResponse
 }
