@@ -2,7 +2,7 @@
 include ':eureka-server'
 
 //Common Libraries
-include ':serialization'
+include 'commons-serialization'
 
 
 //Main Services
@@ -13,4 +13,5 @@ include ':flight-service'
 include 'split-test-model'
 include 'split-test-client'
 include 'split-test-service'
+
 
