@@ -1,47 +1,12 @@
-plugins {
-    id 'org.springframework.boot' version '2.0.0.RELEASE'
-}
+subprojects {
+    version = '1.0'
+    apply plugin: 'scala'
 
-apply plugin: 'scala'
-apply plugin: 'io.spring.dependency-management'
-
-bootJar {
-    classifier = ''
-}
-
-repositories {
-    mavenCentral()
-    maven {
-        url 'https://repo.spring.io/libs-milestone'
-    }
-}
-
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.M7'
-    }
-}
-
-
-dependencies {
-    compile 'org.scala-lang:scala-library:2.12.1'
-    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.4'
-    compile 'com.datastax.cassandra:cassandra-driver-core:3.4.0'
-    //serialization project
-    compile(project(':serialization')) {
-
+    repositories {
+        mavenCentral()
     }
 
-    //Metrics
-    compile 'io.micrometer:micrometer-registry-atlas:latest.release'
-    compile 'org.springframework.boot:spring-boot-starter-actuator'
-
-    //Spring boot configuration
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
-    //Logging
-    compile 'com.typesafe.scala-logging:scala-logging_2.12:3.8.0'
-
-    testCompile 'org.scalatest:scalatest_2.12:3.0.5'
+    dependencies {
+        compile 'org.scala-lang:scala-library:2.12.4'
+    }
 }

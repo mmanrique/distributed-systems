@@ -1,0 +1,7 @@
+version 'unspecified'
+
+apply plugin: 'scala'
+
+dependencies {
+
+}
