@@ -7,4 +7,5 @@ include ':flight-service'
 
 //SubProjects
 include ':split-test:client'
+include ':split-test:service'
 include ':split-test:model'
