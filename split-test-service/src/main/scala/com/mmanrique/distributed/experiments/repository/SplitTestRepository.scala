@@ -1,6 +1,5 @@
 package com.mmanrique.distributed.experiments.repository
 
-
 import com.datastax.driver.core.Row
 import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.mmanrique.distributed.experiments.cassandra.CassandraGateway

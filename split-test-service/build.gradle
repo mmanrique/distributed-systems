@@ -27,7 +27,7 @@ dependencies {
     compile 'com.datastax.cassandra:cassandra-driver-core:3.4.0'
     //serialization project
     compile project(':serialization')
-    compile project(':split-test:model')
+    compile project(':split-test-model')
 
     //Metrics
     compile 'io.micrometer:micrometer-registry-atlas:latest.release'
