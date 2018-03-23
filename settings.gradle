@@ -1,6 +1,11 @@
-include ':serialization'
-//Main Services
+//Discovery Service
+include ':eureka-server'
 
+//Common Libraries
+include ':serialization'
+
+
+//Main Services
 include ':split-test'
 include ':flight-service'
 
