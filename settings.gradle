@@ -1,4 +1,10 @@
 include ':serialization'
+//Main Services
+
 include ':split-test'
+include ':flight-service'
+
+
+//SubProjects
 include ':split-test:client'
 include ':split-test:model'
