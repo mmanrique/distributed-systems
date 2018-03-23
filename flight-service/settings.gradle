@@ -1,3 +1,0 @@
-rootProject.name = 'flight-service'
-include ':split-service-client'
-project(':split-service-client').projectDir = new File(settingsDir, '../split-service-client')
