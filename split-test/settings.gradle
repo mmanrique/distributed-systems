@@ -1,6 +1,5 @@
-include 'model'
-include 'service'
-include 'client'
-
+include ':model'
+include ':service'
+include ':client'
+//External dependency
 include ':serialization'
-project(':serialization').projectDir = new File(settingsDir, '../serialization')

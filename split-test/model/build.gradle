@@ -3,5 +3,5 @@ version 'unspecified'
 apply plugin: 'scala'
 
 dependencies {
-
+    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.4'
 }

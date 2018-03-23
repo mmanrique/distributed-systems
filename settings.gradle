@@ -1,0 +1,3 @@
+include ':serialization'
+include ':split-test'
+include ':split-test:client'
