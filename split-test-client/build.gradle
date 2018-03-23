@@ -12,7 +12,6 @@ dependencies {
     compile project(':split-test-model')
 
     compile 'org.springframework:spring-context:5.0.4.RELEASE'
-    compile 'org.springframework:spring-web:5.0.4.RELEASE'
     compile 'org.springframework.cloud:spring-cloud-commons:2.0.0.M7'
     compile 'org.springframework.cloud:spring-cloud-starter-openfeign:2.0.0.M1'
 
