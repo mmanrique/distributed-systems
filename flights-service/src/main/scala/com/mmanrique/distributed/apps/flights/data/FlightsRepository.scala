@@ -1,6 +1,6 @@
-package com.mmanrique.distributed.apps.flight.data
+package com.mmanrique.distributed.apps.flights.data
 
-import com.mmanrique.distributed.apps.flight.model.Flight
+import com.mmanrique.distributed.apps.flights.model.Flight
 import org.springframework.stereotype.Component
 
 import scala.util.Random

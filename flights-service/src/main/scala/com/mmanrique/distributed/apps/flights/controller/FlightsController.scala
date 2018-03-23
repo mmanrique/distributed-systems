@@ -1,8 +1,8 @@
-package com.mmanrique.distributed.apps.flight.controller
+package com.mmanrique.distributed.apps.flights.controller
 
-import com.mmanrique.distributed.apps.flight.data.FlightsRepository
-import com.mmanrique.distributed.apps.flight.interface.GetFlightsRequest
-import com.mmanrique.distributed.apps.flight.model.Flight
+import com.mmanrique.distributed.apps.flights.data.FlightsRepository
+import com.mmanrique.distributed.apps.flights.interface.GetFlightsRequest
+import com.mmanrique.distributed.apps.flights.model.Flight
 import com.mmanrique.distributed.experiments.client.SplitTestServiceClient
 import com.mmanrique.distributed.experiments.interface.GetSplitTestRequest
 import org.springframework.beans.factory.annotation.Autowired

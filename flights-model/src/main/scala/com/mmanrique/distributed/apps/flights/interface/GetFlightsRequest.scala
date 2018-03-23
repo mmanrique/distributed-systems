@@ -1,4 +1,4 @@
-package com.mmanrique.distributed.apps.flight.interface
+package com.mmanrique.distributed.apps.flights.interface
 
 import java.util.Date
 

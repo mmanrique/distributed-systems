@@ -1,4 +1,4 @@
-package com.mmanrique.distributed.apps.flight
+package com.mmanrique.distributed.apps.flights
 
 import com.mmanrique.distributed.experiments.client.SplitTestServiceClient
 import org.springframework.boot.SpringApplication
