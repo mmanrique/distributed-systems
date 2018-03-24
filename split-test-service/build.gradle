@@ -30,7 +30,7 @@ dependencies {
     compile project(':split-test-model')
 
     //Metrics
-    compile 'io.micrometer:micrometer-registry-atlas:latest.release'
+    compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
 
     //Spring boot configuration
