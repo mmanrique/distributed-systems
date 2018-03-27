@@ -14,3 +14,6 @@ include 'flights-model'
 include 'flights-client'
 include 'flights-service'
 
+//UI
+include 'main-ui'
+

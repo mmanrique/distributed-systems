@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, Req
 class SplitTestController(@Autowired splitTestRepository: SplitTestRepository) extends SplitTestInterface
   with LazyLogging {
 
-  @RequestMapping(method = Array(RequestMethod.POST))
   def getSplitTest(@RequestBody getSplitTestRequest: GetSplitTestRequest): GetSplitTestResponse = {
     logger.info("Received Request [{}]", getSplitTestRequest)
     assert(Option(getSplitTestRequest).isDefined, "request can not be null")

@@ -9,11 +9,11 @@ import scala.util.Random
 class FlightsRepository {
 
   def getFlights(source: String, destination: String): List[Flight] = {
-    getRandomFlights(Random.nextInt(10))
+    getRandomFlights(source, destination, Random.nextInt(10))
   }
 
-  private def getRandomFlights(count: Int): List[Flight] = {
-    List.fill(count)(Flight("x", "y"))
+  private def getRandomFlights(source: String, destination: String, count: Int): List[Flight] = {
+    List.fill(count)(Flight(source, destination, Random.nextInt(200)))
   }
 
 }
