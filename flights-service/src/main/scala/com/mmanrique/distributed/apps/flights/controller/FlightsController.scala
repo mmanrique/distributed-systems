@@ -6,6 +6,7 @@ import com.mmanrique.distributed.apps.flights.model.Flight
 import com.mmanrique.distributed.experiments.client.SplitTestServiceClient
 import com.mmanrique.distributed.experiments.interface.GetSplitTestRequest
 import com.typesafe.scalalogging.LazyLogging
+import org.apache.commons.lang.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, RequestMethod, RestController}
 
@@ -15,12 +16,12 @@ class FlightsController(@Autowired repository: FlightsRepository,
                         @Autowired splitTestServiceClient: SplitTestServiceClient)
   extends FlightsInterface with LazyLogging {
 
-  def getFlights(@RequestBody getFlightsRequest: GetFlightsRequest): List[Flight] = {
-    assert(getFlightsRequest != null, "request can not be null")
-    assert(getFlightsRequest.source != null, "source location can not be null")
-    assert(getFlightsRequest.destination != null, "destination can not be null")
-    logger.info("Received request [{}]", getFlightsRequest)
-    repository.getFlights(getFlightsRequest.source, getFlightsRequest.destination)
+  def getFlights(@RequestBody request: GetFlightsRequest): List[Flight] = {
+    assert(request != null, "request can not be null")
+    assert(StringUtils.isNotBlank(request.source), "source location can not be null")
+    assert(StringUtils.isNotBlank(request.destination), "destination can not be null")
+    logger.info("Received request [{}]", request)
+    repository.getFlights(request.source, request.destination)
   }
 
   @RequestMapping(method = Array(RequestMethod.GET))
