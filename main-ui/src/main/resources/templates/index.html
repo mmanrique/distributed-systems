@@ -19,20 +19,21 @@
       <div class="card-title">
         Choose your destination
       </div>
-      <div class="card-body">
-        <input type="text" class="form-control" placeholder="Departure"/>
-        <input type="text" class="form-control" placeholder="Destination"/>
-        <input type="text" class="form-control date-picker" placeholder="From"/>
-        <input type="text" class="form-control date-picker" placeholder="To"/>
-        <button type="button" class="btn btn-primary">Submit</button>
+      <div class="card-body" id="search_form">
+        <input type="text" class="form-control" name="source" placeholder="Departure"/>
+        <input type="text" class="form-control" name="destination" placeholder="Destination"/>
+        <input type="text" class="form-control date-picker" data-date-format="dd-mm-yyyy" name="departure-date" placeholder="From"/>
+        <input type="text" class="form-control date-picker" data-date-format="dd-mm-yyyy" name="return-date" placeholder="To"/>
+        <button type="button" class="btn btn-primary" id="submit_form">Submit</button>
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
@@ -41,6 +42,32 @@
 <script type="application/javascript">
   $(function () {
     $('.date-picker').datepicker();
+
+    $('#submit_form').click(function(){
+      var data = getSearchData();
+      $.ajax({
+        contentType:"application/json; charset=utf-8",
+        type: 'POST',
+        url: '/search',
+        data: JSON.stringify(data),
+        success: searchSuccessHandler,
+        dataType: 'json'
+      });
+    });
+
+    function getSearchData() {
+      var formdata = $("#search_form .form-control").serializeArray();
+      var data = {};
+      $(formdata).each(function (index, obj) {
+        data[obj.name] = obj.value;
+      });
+      return data;
+    }
+
+    function searchSuccessHandler(data) {
+      console.log(data);
+    }
+
   });
 </script>
 </body>

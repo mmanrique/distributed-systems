@@ -16,15 +16,24 @@ repositories{
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.M7'
+    }
+}
+
 
 dependencies {
+    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.4'
 
     compile project(':flights-client')
     compile project(':split-test-client')
+    compile project(':commons-serialization')
 
     compile 'com.typesafe.scala-logging:scala-logging_2.12:3.8.0'
 
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.springframework.boot:spring-boot-devtools'
+    compile 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }

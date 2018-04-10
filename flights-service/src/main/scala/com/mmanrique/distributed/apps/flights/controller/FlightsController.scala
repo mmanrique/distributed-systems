@@ -5,6 +5,7 @@ import com.mmanrique.distributed.apps.flights.interface.{FlightsInterface, GetFl
 import com.mmanrique.distributed.apps.flights.model.Flight
 import com.mmanrique.distributed.experiments.client.SplitTestServiceClient
 import com.mmanrique.distributed.experiments.interface.GetSplitTestRequest
+import com.typesafe.scalalogging.LazyLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, RequestMethod, RestController}
 
@@ -12,12 +13,13 @@ import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, Req
 @RequestMapping
 class FlightsController(@Autowired repository: FlightsRepository,
                         @Autowired splitTestServiceClient: SplitTestServiceClient)
-  extends FlightsInterface {
+  extends FlightsInterface with LazyLogging {
 
   def getFlights(@RequestBody getFlightsRequest: GetFlightsRequest): List[Flight] = {
     assert(getFlightsRequest != null, "request can not be null")
     assert(getFlightsRequest.source != null, "source location can not be null")
     assert(getFlightsRequest.destination != null, "destination can not be null")
+    logger.info("Received request [{}]", getFlightsRequest)
     repository.getFlights(getFlightsRequest.source, getFlightsRequest.destination)
   }
 

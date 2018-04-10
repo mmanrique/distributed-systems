@@ -1,12 +1,11 @@
 package com.mmanrique.distributed.apps.flights.interface
 
-import java.util.Date
+import java.time.LocalDate
 
-import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonCreator
 case class GetFlightsRequest(@JsonProperty("source") source: String,
                              @JsonProperty("destination") destination: String,
-                             @JsonProperty("date") date: Date = new Date()) {
-
+                             @JsonProperty("departureDate") departureDate: LocalDate,
+                             @JsonProperty("returnDate") returnDate: Option[LocalDate]) {
 }

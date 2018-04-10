@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.{GetMapping, PostMapping}
+import org.springframework.web.bind.annotation.{GetMapping, PostMapping, RequestBody}
 
 @Controller
 class IndexController(@Autowired flightsServiceClient: FlightsServiceClient,
@@ -22,9 +22,12 @@ class IndexController(@Autowired flightsServiceClient: FlightsServiceClient,
     "index"
   }
 
+  def requestIsValid(request: SearchRequest): Boolean = true
+
   @PostMapping(value = Array("/search"))
-  def getResults(request: SearchRequest): ResponseEntity[SearchResults] = {
+  def getResults(@RequestBody request: SearchRequest): ResponseEntity[SearchResults] = {
     logger.info("Received request [{}]", request)
+    assert(requestIsValid(request))
     val flightSearchResults = flightResults(request).getOrElse(List())
     val response = SearchResults(flightSearchResults, request.includeAir)
     logger.info("Returned response [{}]", response)
@@ -32,10 +35,10 @@ class IndexController(@Autowired flightsServiceClient: FlightsServiceClient,
   }
 
   private def flightResults(request: SearchRequest): Option[List[Flight]] = {
-    if (!request.includeAir) {
+    if (request.excludeAir) {
       Option.empty
     } else {
-      val getFlightsRequest = GetFlightsRequest(request.source, request.destination, request.departureDate)
+      val getFlightsRequest = GetFlightsRequest(request.source, request.destination, request.departureDate, request.returnDate)
       //TODO: This call can fail, we have to make sure that this call will not break the service
       Option(flightsServiceClient.getFlights(getFlightsRequest))
     }
