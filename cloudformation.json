@@ -14,27 +14,98 @@
       "Description" : "WebServer EC2 instance type",
       "Type" : "String",
       "Default" : "t2.micro",
-      "AllowedValues" : [ "t2.nano", "t2.micro",],
+      "AllowedValues" : [ "t2.nano", "t2.micro"],
       "ConstraintDescription" : "must be a valid EC2 instance type."
-    },
+    }
   },
 
   "Resources" : {
+
+    "InstanceRole":{
+      "Type":"AWS::IAM::Role",
+      "Properties":{
+        "AssumeRolePolicyDocument":{
+          "Statement":[
+            {
+              "Effect":"Allow",
+              "Principal":{
+                "Service":[
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action":[
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path":"/"
+      }
+    },
+    "RolePolicies":{
+      "Type":"AWS::IAM::Policy",
+      "Properties":{
+        "PolicyName":"S3Download",
+        "PolicyDocument":{
+          "Statement":[
+            {
+              "Action":[
+                "s3:GetObject"
+              ],
+              "Effect":"Allow",
+              "Resource":"arn:aws:s3:::your-bucket"
+            }
+          ]
+        },
+        "Roles":[
+          {
+            "Ref":"InstanceRole"
+          }
+        ]
+      }
+    },
+    "InstanceProfile":{
+      "Type":"AWS::IAM::InstanceProfile",
+      "Properties":{
+        "Path":"/",
+        "Roles":[
+          {
+            "Ref":"InstanceRole"
+          }
+        ]
+      }
+    },
     "Server1" : {
       "Type" : "AWS::EC2::Instance",
       "Metadata": {
-         "AWS::CloudFormation::Init" : {
-          "configSets": {
-            "Install" :["Install"]
-          },
-          "Install": {
-            "packages": {
-              "yum" : {
-                "httpd": [],
-                "java-1.7.0-openjdk-devel": []
-              }
+        "AWS::CloudFormation::Authentication": {
+          "S3AccessCreds": {
+            "type": "S3",
+            "roleName": {
+              "Ref": "InstanceRole"
             }
           }
+        },
+         "AWS::CloudFormation::Init" : {
+            "configSets": {
+              "Install" :["Install"]
+            },
+            "Install": {
+              "packages": {
+                "yum" : {
+                  "java-1.7.0-openjdk-devel": []
+                }
+              },
+              "files" :{
+                "/var/app.jar":{
+                  "source" :"http://com.mmanrique.sample.1.s3.amazonaws.com/eureka-server-1.0.jar",
+                  "mode": "000400",
+                  "owner": "ec2-user",
+                  "group": "ec2-user",
+                  "authentication": "S3AccessCreds"
+                }
+              }
+            },
          }
       },
       "Properties" : {
@@ -42,6 +113,9 @@
         "SecurityGroupIds" : [ "sg-f97c098a" ],
         "KeyName" : { "Ref" : "KeyName" },
         "ImageId" : "ami-6cd6f714",
+        "IamInstanceProfile": {
+          "Ref": "InstanceProfile"
+        },
         "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
            "#!/bin/bash -xe\n",
            "yum install -y aws-cfn-bootstrap\n",
