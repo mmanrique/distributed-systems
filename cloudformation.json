@@ -53,7 +53,7 @@
                 "s3:GetObject"
               ],
               "Effect":"Allow",
-              "Resource":"arn:aws:s3:::your-bucket"
+              "Resource":"arn:aws:s3:::com.mmanrique.sample.2/*"
             }
           ]
         },
@@ -75,7 +75,7 @@
         ]
       }
     },
-    "Server1" : {
+    "Eureka" : {
       "Type" : "AWS::EC2::Instance",
       "Metadata": {
         "AWS::CloudFormation::Authentication": {
@@ -93,24 +93,24 @@
             "Install": {
               "packages": {
                 "yum" : {
-                  "java-1.7.0-openjdk-devel": []
+                  "java-1.8.0-openjdk-devel": []
                 }
               },
               "files" :{
                 "/var/app.jar":{
-                  "source" :"http://com.mmanrique.sample.1.s3.amazonaws.com/eureka-server-1.0.jar",
+                  "source" :"http://com.mmanrique.sample.2.s3.amazonaws.com/eureka-server-1.0.jar",
                   "mode": "000400",
                   "owner": "ec2-user",
                   "group": "ec2-user",
                   "authentication": "S3AccessCreds"
                 }
               }
-            },
+            }
          }
       },
       "Properties" : {
         "InstanceType" : { "Ref" : "InstanceType" },
-        "SecurityGroupIds" : [ "sg-f97c098a" ],
+        "SecurityGroupIds" : [ "sg-14a9ec67" ],
         "KeyName" : { "Ref" : "KeyName" },
         "ImageId" : "ami-6cd6f714",
         "IamInstanceProfile": {
@@ -123,26 +123,71 @@
            "# Install the files and packages from the metadata\n",
            "/opt/aws/bin/cfn-init -v ",
            "         --stack ", { "Ref" : "AWS::StackName" },
-           "         --resource Server1 ",
+           "         --resource Eureka ",
            "         --configsets Install ",
            "         --region ", { "Ref" : "AWS::Region" }, "\n"
       ]]}}
       }
     },
-    "Server2" : {
+    "SplitTest" : {
       "Type" : "AWS::EC2::Instance",
+      "Metadata": {
+        "AWS::CloudFormation::Authentication": {
+          "S3AccessCreds": {
+            "type": "S3",
+            "roleName": {
+              "Ref": "InstanceRole"
+            }
+          }
+        },
+        "AWS::CloudFormation::Init" : {
+          "configSets": {
+            "Install" :["Install"]
+          },
+          "Install": {
+            "packages": {
+              "yum" : {
+                "java-1.8.0-openjdk-devel": []
+              }
+            },
+            "files" :{
+              "/var/app.jar":{
+                "source" :"http://com.mmanrique.sample.2.s3.amazonaws.com/split-test-service-1.0.jar",
+                "mode": "000400",
+                "owner": "ec2-user",
+                "group": "ec2-user",
+                "authentication": "S3AccessCreds"
+              }
+            }
+          }
+        }
+      },
       "Properties" : {
         "InstanceType" : { "Ref" : "InstanceType" },
-        "SecurityGroupIds" : [ "sg-f97c098a" ],
+        "SecurityGroupIds" : [ "sg-14a9ec67" ],
         "KeyName" : { "Ref" : "KeyName" },
-        "ImageId" : "ami-6cd6f714"
+        "ImageId" : "ami-6cd6f714",
+        "IamInstanceProfile": {
+          "Ref": "InstanceProfile"
+        },
+        "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
+          "#!/bin/bash -xe\n",
+          "yum install -y aws-cfn-bootstrap\n",
+
+          "# Install the files and packages from the metadata\n",
+          "/opt/aws/bin/cfn-init -v ",
+          "         --stack ", { "Ref" : "AWS::StackName" },
+          "         --resource SplitTest ",
+          "         --configsets Install ",
+          "         --region ", { "Ref" : "AWS::Region" }, "\n"
+        ]]}}
       }
     },
     "Server3" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
         "InstanceType" : { "Ref" : "InstanceType" },
-        "SecurityGroupIds" : [ "sg-f97c098a" ],
+        "SecurityGroupIds" : [ "sg-14a9ec67" ],
         "KeyName" : { "Ref" : "KeyName" },
         "ImageId" : "ami-6cd6f714"
       }
@@ -150,21 +195,21 @@
   },
 
   "Outputs" : {
-    "InstanceId" : {
-      "Description" : "InstanceId of the newly created EC2 instance",
-      "Value" : { "Ref" : "Server1" }
+    "EurekaInstanceId" : {
+      "Description" : "InstanceId of Eureka",
+      "Value" : { "Ref" : "Eureka" }
     },
-    "AZ" : {
-      "Description" : "Availability Zone of the newly created EC2 instance",
-      "Value" : { "Fn::GetAtt" : [ "Server1", "AvailabilityZone" ] }
+    "EurekaPublicDns" : {
+      "Description" : "Public DNSName of Eureka instance",
+      "Value" : { "Fn::GetAtt" : [ "Eureka", "PublicDnsName" ] }
     },
-    "PublicDNS" : {
-      "Description" : "Public DNSName of the newly created EC2 instance",
-      "Value" : { "Fn::GetAtt" : [ "Server1", "PublicDnsName" ] }
+    "SplitTestnstanceId" : {
+      "Description" : "InstanceId of Eureka",
+      "Value" : { "Ref" : "SplitTest" }
     },
-    "PublicIP" : {
-      "Description" : "Public IP address of the newly created EC2 instance",
-      "Value" : { "Fn::GetAtt" : [ "Server1", "PublicIp" ] }
+    "SplitTestPublicDns" : {
+      "Description" : "Public DNSName of SplitService instance",
+      "Value" : { "Fn::GetAtt" : [ "SplitTest", "PublicDnsName" ] }
     }
   }
 }
