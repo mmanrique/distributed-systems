@@ -1,0 +1,96 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Creates one EC2 Instance in US-WEST-2 and install java into it",
+
+  "Parameters" : {
+    "KeyName": {
+      "Description" : "Key Pair name",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription" : "must exist in AWS"
+    },
+
+    "InstanceType" : {
+      "Description" : "WebServer EC2 instance type",
+      "Type" : "String",
+      "Default" : "t2.micro",
+      "AllowedValues" : [ "t2.nano", "t2.micro",],
+      "ConstraintDescription" : "must be a valid EC2 instance type."
+    },
+  },
+
+  "Resources" : {
+    "Server1" : {
+      "Type" : "AWS::EC2::Instance",
+      "Metadata": {
+         "AWS::CloudFormation::Init" : {
+          "configSets": {
+            "Install" :["Install"]
+          },
+          "Install": {
+            "packages": {
+              "yum" : {
+                "httpd": [],
+                "java-1.7.0-openjdk-devel": []
+              }
+            }
+          }
+         }
+      },
+      "Properties" : {
+        "InstanceType" : { "Ref" : "InstanceType" },
+        "SecurityGroupIds" : [ "sg-f97c098a" ],
+        "KeyName" : { "Ref" : "KeyName" },
+        "ImageId" : "ami-6cd6f714",
+        "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
+           "#!/bin/bash -xe\n",
+           "yum install -y aws-cfn-bootstrap\n",
+
+           "# Install the files and packages from the metadata\n",
+           "/opt/aws/bin/cfn-init -v ",
+           "         --stack ", { "Ref" : "AWS::StackName" },
+           "         --resource Server1 ",
+           "         --configsets Install ",
+           "         --region ", { "Ref" : "AWS::Region" }, "\n"
+      ]]}}
+      }
+    },
+    "Server2" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "InstanceType" : { "Ref" : "InstanceType" },
+        "SecurityGroupIds" : [ "sg-f97c098a" ],
+        "KeyName" : { "Ref" : "KeyName" },
+        "ImageId" : "ami-6cd6f714"
+      }
+    },
+    "Server3" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "InstanceType" : { "Ref" : "InstanceType" },
+        "SecurityGroupIds" : [ "sg-f97c098a" ],
+        "KeyName" : { "Ref" : "KeyName" },
+        "ImageId" : "ami-6cd6f714"
+      }
+    }
+  },
+
+  "Outputs" : {
+    "InstanceId" : {
+      "Description" : "InstanceId of the newly created EC2 instance",
+      "Value" : { "Ref" : "Server1" }
+    },
+    "AZ" : {
+      "Description" : "Availability Zone of the newly created EC2 instance",
+      "Value" : { "Fn::GetAtt" : [ "Server1", "AvailabilityZone" ] }
+    },
+    "PublicDNS" : {
+      "Description" : "Public DNSName of the newly created EC2 instance",
+      "Value" : { "Fn::GetAtt" : [ "Server1", "PublicDnsName" ] }
+    },
+    "PublicIP" : {
+      "Description" : "Public IP address of the newly created EC2 instance",
+      "Value" : { "Fn::GetAtt" : [ "Server1", "PublicIp" ] }
+    }
+  }
+}
