@@ -1,7 +1,7 @@
 package com.mmanrique.distributed.experiments.controller
 
+import com.mmanrique.distributed.experiments.dynamo.DynamoDBSplitTestRepository
 import com.mmanrique.distributed.experiments.interface.{GetSplitTestRequest, GetSplitTestResponse, SplitTestInterface}
-import com.mmanrique.distributed.experiments.repository.SplitTestRepository
 import com.typesafe.scalalogging.LazyLogging
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, Req
 
 @RestController
 @RequestMapping
-class SplitTestController(@Autowired splitTestRepository: SplitTestRepository) extends SplitTestInterface
+class SplitTestController(@Autowired splitTestRepository: DynamoDBSplitTestRepository) extends SplitTestInterface
   with LazyLogging {
 
   def getSplitTest(@RequestBody getSplitTestRequest: GetSplitTestRequest): GetSplitTestResponse = {
