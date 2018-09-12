@@ -2,10 +2,11 @@ package com.mmanrique.distributed.experiments.controller
 
 import com.mmanrique.distributed.experiments.dynamo.DynamoDBSplitTestRepository
 import com.mmanrique.distributed.experiments.interface.{GetSplitTestRequest, GetSplitTestResponse, SplitTestInterface}
+import com.mmanrique.distributed.experiments.model.SplitTestMetadata
 import com.typesafe.scalalogging.LazyLogging
 import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.{RequestBody, RequestMapping, RequestMethod, RestController}
+import org.springframework.web.bind.annotation._
 
 @RestController
 @RequestMapping
@@ -28,4 +29,9 @@ class SplitTestController(@Autowired splitTestRepository: DynamoDBSplitTestRepos
     "Connection is Up"
   }
 
+  //Unfortunately, we have to add @PathVariable to the child as well
+  def getSplitTestMetadata(@PathVariable name: String): SplitTestMetadata = {
+    logger.info("Fetching Split Test Metadata for name {}", name)
+    splitTestRepository.getSplitTestMetadata(name)
+  }
 }

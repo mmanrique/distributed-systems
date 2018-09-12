@@ -1,0 +1,3 @@
+split-test-service:
+  ribbon:
+    listOfServers: ${SPLIT_TEST_ENDPOINT:split-test-service}

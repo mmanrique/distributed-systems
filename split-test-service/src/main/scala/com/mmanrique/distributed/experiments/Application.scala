@@ -23,7 +23,7 @@ object Application {
   def getCommandLineRunner(dynamoDBBootstrapper: DynamoDBBootstrapper, dynamoDBSplitTestRepository: DynamoDBSplitTestRepository): CommandLineRunner = {
     new CommandLineRunner {
       override def run(args: String*): Unit = {
-        dynamoDBBootstrapper.bootStrap()
+        dynamoDBBootstrapper.bootStrap
       }
     }
   }

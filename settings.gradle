@@ -16,4 +16,5 @@ include 'flights-service'
 
 //UI
 include 'main-ui'
+include 'split-test-ui'
 
