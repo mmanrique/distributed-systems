@@ -1,0 +1,8 @@
+server:
+  port: 80
+eureka:
+  client:
+    enabled: false
+split-test-service:
+  ribbon:
+    listOfServers: ${SPLIT_TEST_ENDPOINT:split-test-service}

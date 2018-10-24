@@ -1,0 +1,19 @@
+server:
+  port: ${PORT:8081}
+eureka:
+  client:
+    enabled: ${EUREKA_ENABLE:true}
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://127.0.0.1:8761}/eureka/
+  instance:
+    preferIpAddress: true
+#This exports two endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  metrics:
+    export:
+      atlas:
+        uri: http://localhost:7101/api/v1/publish

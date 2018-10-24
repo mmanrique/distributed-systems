@@ -34,6 +34,7 @@ class DynamoDBSplitTestRepository(dynamoDBMapper: DynamoDBMapper) extends SplitT
       .withExpressionAttributeValues(values.asJava)
       .withExpressionAttributeNames(names.asJava)
     val scala: mutable.Buffer[DynamoSplitTest] = dynamoDBMapper.query(classOf[DynamoSplitTest], expression).asScala
+    logger.info("Got {} elements for {}", scala.size, name)
     scala.toList
   }
 }
